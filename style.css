@@ -1,0 +1,184 @@
+
+:root {
+  
+  --bg-main: #1e293b; 
+  --bg-card: #334155;
+  --text-light: #ffffff;
+  --text-muted: #cbd5e1;
+  --accent: #38bdf8;
+  --accent-hover: #0ea5e9;
+  
+  /* Tipografi */
+  --font-primary: 'Inter', system-ui, -apple-system, sans-serif;
+  --transition-smooth: 0.3s ease-in-out;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--font-primary);
+  background-color: var(--bg-main);
+  color: var(--text-light);
+  line-height: 1.6;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  /* Animasi mulus saat halaman pertama kali dimuat */
+  animation: fadeInDocument 0.5s ease-out; 
+}
+
+/* =========================================
+   2. NAVIGASI (FLEXBOX)
+   ========================================= */
+.navbar {
+  background-color: rgba(15, 23, 42, 0.9);
+  padding: 1.2rem 2rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  backdrop-filter: blur(8px); /* Efek glassmorphism modern */
+}
+
+.nav-list {
+  list-style: none;
+  display: flex; /* Layout Flexbox wajib */
+  justify-content: center;
+  align-items: center;
+  gap: 2.5rem;
+}
+
+.nav-link {
+  color: var(--text-light); /* Warna teks putih */
+  text-decoration: none;    /* Hilangkan garis bawah */
+  font-weight: 500;
+  font-size: 1rem;
+  padding: 0.5rem 0;
+  position: relative;
+  transition: color var(--transition-smooth);
+}
+
+/* Interaksi Hover: Efek garis bawah animasi yang elegan */
+.nav-link::after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 2px;
+  bottom: 0;
+  left: 0;
+  background-color: var(--accent);
+  transition: width var(--transition-smooth);
+}
+
+.nav-link:hover {
+  color: var(--accent);
+}
+
+.nav-link:hover::after {
+  width: 100%;
+}
+
+/* =========================================
+   3. LAYOUT KONTEN UTAMA
+   ========================================= */
+.container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 3rem 2rem;
+  flex: 1;
+  width: 100%;
+}
+
+/* Styling Khusus Halaman Profil */
+.profile-card {
+  background-color: var(--bg-card);
+  border-radius: 16px;
+  padding: 3rem;
+  text-align: center;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.profile-img {
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 4px solid var(--accent);
+  margin-bottom: 1.5rem;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.profile-name {
+  font-size: 2.2rem;
+  margin-bottom: 0.2rem;
+  color: var(--text-light);
+}
+
+.profile-major {
+  font-size: 1.1rem;
+  color: var(--accent);
+  font-weight: 400;
+  margin-bottom: 2.5rem;
+}
+
+.skills-wrapper {
+  background-color: rgba(0, 0, 0, 0.15);
+  padding: 1.5rem;
+  border-radius: 12px;
+  text-align: left;
+  margin-bottom: 2.5rem;
+}
+
+.skills-title {
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid var(--text-muted);
+  padding-bottom: 0.5rem;
+}
+
+.skills-list {
+  padding-left: 1.5rem;
+  color: var(--text-muted);
+}
+
+.skills-list li {
+  margin-bottom: 0.5rem;
+}
+
+/* Tombol / Tautan Eksternal */
+.btn-primary {
+  display: inline-flex; 
+  align-items: center;  
+  justify-content: center;
+  gap: 0.6rem;         
+  
+  background-color: var(--accent);
+  color: #0f172a;
+  padding: 0.8rem 2rem;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: all var(--transition-smooth);
+}
+
+.btn-primary:hover {
+  background-color: var(--accent-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(14, 165, 233, 0.4);
+}
+
+
+.icon-instagram {
+  display: block;
+}
+
+/* Keyframes untuk simulasi perpindahan halaman yang halus */
+@keyframes fadeInDocument {
+  from { opacity: 0; transform: translateY(15px); }
+  to { opacity: 1; transform: translateY(0); }
+}
