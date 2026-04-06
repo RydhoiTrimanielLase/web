@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Form Pendaftaran</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --primary: #0ea5e9;
+      --primary-dark: #0284c7;
+      --accent: #06b6d4;
+      --bg: #f0f9ff;
+      --card: #ffffff;
+      --text: #0f172a;
+      --muted: #64748b;
+      --border: #cbd5e1;
+      --error: #ef4444;
+      --success: #22c55e;
+      --radius: 12px;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: var(--bg);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem 1rem;
+      background-image:
+        radial-gradient(ellipse at 20% 20%, #bae6fd55 0%, transparent 60%),
+        radial-gradient(ellipse at 80% 80%, #a5f3fc44 0%, transparent 60%);
+    }
+
+    .wrapper {
+      width: 100%;
+      max-width: 560px;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .header h1 {
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: var(--text);
+      letter-spacing: -0.5px;
+    }
+
+    .header p {
+      color: var(--muted);
+      margin-top: 0.4rem;
+      font-size: 0.95rem;
+    }
+
+    .card {
+      background: var(--card);
+      border-radius: var(--radius);
+      box-shadow: 0 4px 24px rgba(14, 165, 233, 0.1), 0 1px 4px rgba(0,0,0,0.05);
+      padding: 2rem;
+      border: 1px solid #e0f2fe;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.2rem;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+
+    .form-group.full {
+      grid-column: 1 / -1;
+    }
+
+    label {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    label .required {
+      color: var(--error);
+      margin-left: 2px;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="password"] {
+      width: 100%;
+      padding: 0.65rem 0.9rem;
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      font-family: inherit;
+      font-size: 0.95rem;
+      color: var(--text);
+      background: #f8fafc;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      outline: none;
+    }
+
+    input[type="text"]:focus,
+    input[type="email"]:focus,
+    input[type="password"]:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px #0ea5e920;
+      background: #fff;
+    }
+
+    input.invalid {
+      border-color: var(--error);
+      box-shadow: 0 0 0 3px #ef444420;
+    }
+
+    .error-msg {
+      font-size: 0.78rem;
+      color: var(--error);
+      min-height: 1rem;
+      display: none;
+    }
+
+    .error-msg.show { display: block; }
+
+    /* Radio */
+    .radio-group {
+      display: flex;
+      gap: 1.2rem;
+      margin-top: 4px;
+    }
+
+    .radio-item {
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+      cursor: pointer;
+    }
+
+    .radio-item input[type="radio"] {
+      accent-color: var(--primary);
+      width: 16px;
+      height: 16px;
+      cursor: pointer;
+    }
+
+    .radio-item span {
+      font-size: 0.92rem;
+      color: var(--text);
+    }
+
+    /* Checkbox */
+    .checkbox-group {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.5rem;
+      margin-top: 4px;
+    }
+
+    .checkbox-item {
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+      cursor: pointer;
+    }
+
+    .checkbox-item input[type="checkbox"] {
+      accent-color: var(--primary);
+      width: 16px;
+      height: 16px;
+      cursor: pointer;
+    }
+
+    .checkbox-item span {
+      font-size: 0.9rem;
+      color: var(--text);
+    }
+
+    /* Submit */
+    .btn-submit {
+      width: 100%;
+      padding: 0.85rem;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-family: inherit;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 0.5rem;
+      transition: opacity 0.2s, transform 0.15s;
+      letter-spacing: 0.2px;
+    }
+
+    .btn-submit:hover { opacity: 0.92; transform: translateY(-1px); }
+    .btn-submit:active { transform: translateY(0); }
+
+    .divider {
+      border: none;
+      border-top: 1px solid #e2e8f0;
+      margin: 1.2rem 0;
+    }
+
+    /* Success Modal */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.4);
+      backdrop-filter: blur(4px);
+      z-index: 100;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal-overlay.show { display: flex; }
+
+    .modal {
+      background: white;
+      border-radius: var(--radius);
+      padding: 2.5rem 2rem;
+      text-align: center;
+      max-width: 360px;
+      width: 90%;
+      animation: popIn 0.3s ease;
+    }
+
+    @keyframes popIn {
+      from { transform: scale(0.85); opacity: 0; }
+      to   { transform: scale(1);    opacity: 1; }
+    }
+
+    .modal-icon {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+    }
+
+    .modal h2 {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .modal p {
+      color: var(--muted);
+      margin-top: 0.5rem;
+      font-size: 0.92rem;
+    }
+
+    .btn-close {
+      margin-top: 1.5rem;
+      padding: 0.65rem 2rem;
+      background: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-family: inherit;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    @media (max-width: 480px) {
+      .form-grid { grid-template-columns: 1fr; }
+      .form-group.full { grid-column: 1; }
+      .checkbox-group { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="wrapper">
+    <div class="header">
+      <h1>📋 Form Pendaftaran</h1>
+      <p>Lengkapi semua data diri Anda di bawah ini</p>
+    </div>
+
+    <div class="card">
+      <form action="#" method="post" id="formPendaftaran" novalidate onsubmit="return false;">
+
+        <div class="form-grid">
+
+          <!-- Nama -->
+          <div class="form-group full">
+            <label for="nama">Nama Lengkap <span class="required">*</span></label>
+            <input type="text" id="nama" name="nama" placeholder="Masukkan nama lengkap Anda" />
+            <span class="error-msg" id="err-nama">Nama tidak boleh kosong.</span>
+          </div>
+
+          <!-- Email -->
+          <div class="form-group full">
+            <label for="email">Email <span class="required">*</span></label>
+            <input type="email" id="email" name="email" placeholder="contoh@email.com" />
+            <span class="error-msg" id="err-email">Masukkan alamat email yang valid.</span>
+          </div>
+
+          <!-- Password -->
+          <div class="form-group">
+            <label for="password">Password <span class="required">*</span></label>
+            <input type="password" id="password" name="password" placeholder="Min. 6 karakter" />
+            <span class="error-msg" id="err-password">Password minimal 6 karakter.</span>
+          </div>
+
+          <!-- Konfirmasi Password -->
+          <div class="form-group">
+            <label for="konfirmasi">Konfirmasi Password <span class="required">*</span></label>
+            <input type="password" id="konfirmasi" name="konfirmasi" placeholder="Ulangi password" />
+            <span class="error-msg" id="err-konfirmasi">Password tidak cocok.</span>
+          </div>
+
+          <!-- Jenis Kelamin -->
+          <div class="form-group full">
+            <label>Jenis Kelamin <span class="required">*</span></label>
+            <div class="radio-group">
+              <label class="radio-item">
+                <input type="radio" name="jenis_kelamin" value="L" />
+                <span>Laki-laki</span>
+              </label>
+              <label class="radio-item">
+                <input type="radio" name="jenis_kelamin" value="P" />
+                <span>Perempuan</span>
+              </label>
+            </div>
+            <span class="error-msg" id="err-gender">Pilih jenis kelamin.</span>
+          </div>
+
+          <hr class="divider" style="grid-column: 1/-1;" />
+
+          <!-- Hobi -->
+          <div class="form-group full">
+            <label>Hobi <span class="required">*</span> <small style="font-weight:400;color:var(--muted)">(pilih minimal 1)</small></label>
+            <div class="checkbox-group">
+              <label class="checkbox-item">
+                <input type="checkbox" name="hobi" value="membaca" />
+                <span>📚 Membaca</span>
+              </label>
+              <label class="checkbox-item">
+                <input type="checkbox" name="hobi" value="olahraga" />
+                <span>⚽ Olahraga</span>
+              </label>
+              <label class="checkbox-item">
+                <input type="checkbox" name="hobi" value="musik" />
+                <span>🎵 Musik</span>
+              </label>
+              <label class="checkbox-item">
+                <input type="checkbox" name="hobi" value="coding" />
+                <span>💻 Coding</span>
+              </label>
+              <label class="checkbox-item">
+                <input type="checkbox" name="hobi" value="memasak" />
+                <span>🍳 Memasak</span>
+              </label>
+              <label class="checkbox-item">
+                <input type="checkbox" name="hobi" value="traveling" />
+                <span>✈️ Traveling</span>
+              </label>
+            </div>
+            <span class="error-msg" id="err-hobi">Pilih minimal satu hobi.</span>
+          </div>
+
+        </div>
+
+        <hr class="divider" />
+
+        <button type="submit" class="btn-submit">Daftar Sekarang →</button>
+
+      </form>
+    </div>
+  </div>
+
+  <!-- Success Modal -->
+  <div class="modal-overlay" id="modalSuccess">
+    <div class="modal">
+      <div class="modal-icon">🎉</div>
+      <h2>Pendaftaran Berhasil!</h2>
+      <p>Data Anda telah berhasil dikirim. Terima kasih sudah mendaftar.</p>
+      <button class="btn-close" onclick="closeModal()">Tutup</button>
+    </div>
+  </div>
+
+  <script>
+    const form = document.getElementById('formPendaftaran');
+
+    function showError(id, inputEl) {
+      document.getElementById(id).classList.add('show');
+      if (inputEl) inputEl.classList.add('invalid');
+    }
+
+    function clearError(id, inputEl) {
+      document.getElementById(id).classList.remove('show');
+      if (inputEl) inputEl.classList.remove('invalid');
+    }
+
+    // Live validation on blur
+    document.getElementById('nama').addEventListener('blur', function() {
+      this.value.trim() ? clearError('err-nama', this) : showError('err-nama', this);
+    });
+
+    document.getElementById('email').addEventListener('blur', function() {
+      const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      re.test(this.value.trim()) ? clearError('err-email', this) : showError('err-email', this);
+    });
+
+    document.getElementById('password').addEventListener('blur', function() {
+      this.value.length >= 6 ? clearError('err-password', this) : showError('err-password', this);
+    });
+
+    document.getElementById('konfirmasi').addEventListener('blur', function() {
+      const pw = document.getElementById('password').value;
+      this.value === pw && this.value !== '' ? clearError('err-konfirmasi', this) : showError('err-konfirmasi', this);
+    });
+
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+      let valid = true;
+
+      // Nama
+      const nama = document.getElementById('nama');
+      if (!nama.value.trim()) { showError('err-nama', nama); valid = false; }
+      else clearError('err-nama', nama);
+
+      // Email
+      const email = document.getElementById('email');
+      const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!re.test(email.value.trim())) { showError('err-email', email); valid = false; }
+      else clearError('err-email', email);
+
+      // Password
+      const password = document.getElementById('password');
+      if (password.value.length < 6) { showError('err-password', password); valid = false; }
+      else clearError('err-password', password);
+
+      // Konfirmasi
+      const konfirmasi = document.getElementById('konfirmasi');
+      if (konfirmasi.value !== password.value || konfirmasi.value === '') {
+        showError('err-konfirmasi', konfirmasi); valid = false;
+      } else clearError('err-konfirmasi', konfirmasi);
+
+      // Jenis kelamin
+      const genderSelected = document.querySelector('input[name="jenis_kelamin"]:checked');
+      if (!genderSelected) { showError('err-gender', null); valid = false; }
+      else clearError('err-gender', null);
+
+      // Hobi
+      const hobiChecked = document.querySelectorAll('input[name="hobi"]:checked');
+      if (hobiChecked.length === 0) { showError('err-hobi', null); valid = false; }
+      else clearError('err-hobi', null);
+
+      if (valid) {
+        document.getElementById('modalSuccess').classList.add('show');
+      }
+    });
+
+    function closeModal() {
+      document.getElementById('modalSuccess').classList.remove('show');
+      form.reset();
+    }
+  </script>
+</body>
+</html>
